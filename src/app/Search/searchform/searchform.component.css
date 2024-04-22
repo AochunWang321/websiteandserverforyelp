@@ -1,0 +1,36 @@
+.redstart::after {
+  content: "*";
+  color: red;
+}
+
+#searchform {
+  /* position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%); */
+  background-color: #fff;
+  max-width: 900px;
+  padding: 30px;
+  margin: 30px auto;
+}
+
+.mat-input-element {
+  border: 1px solid #ccc;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+  border-bottom: none;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
+  height: 0;
+}
+
+#searchform {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}

@@ -1,0 +1,19 @@
+table th {
+  text-align: center;
+}
+
+.mat-typography h1 {
+  background-color: #fff;
+}
+
+.img-fluid {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+table th {
+  cursor: pointer;
+}

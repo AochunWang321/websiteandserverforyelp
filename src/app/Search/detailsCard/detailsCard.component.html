@@ -1,0 +1,188 @@
+<div id="detail" *ngIf="detailsCard.message!=undefined">
+  <h1 class="text-center">{{form.businessname}}</h1>
+  <mat-tab-group mat-align-tabs="center" backgroundColor="primary">
+    <mat-tab label="Business details" active>
+      <div class="container ">
+        <div class="row">
+          <div class="col-md-6">
+            <p class="tit">Address</p>
+            <!-- <p class="desc" *ngIf="detailsCard.message.location!=undefined">{{detailsCard.message.location.address1}}
+              {{detailsCard.message.location.address2}}
+              {{detailsCard.message.location.address3}} {{detailsCard.message.location.state}}
+              {{detailsCard.message.location.zip_code}}</p> -->
+            <p class="desc">{{detailsCard.message.location.display_address.join('')}}</p>
+          </div>
+          <div class="col-md-6" *ngIf="detailsCard.message.categories!=undefined">
+            <p class="tit">Category</p>
+            <p class="desc" *ngIf="detailsCard.message.categories!=undefined">
+              <span *ngFor="let list of detailsCard.message.categories; index as i">
+                {{list.title}} <span *ngIf="i!=detailsCard.message.categories.length-1">|</span>
+              </span>
+            </p>
+          </div>
+          <div class="col-md-6" *ngIf="detailsCard.message.display_phone!=''">
+            <p class="tit">Phone</p>
+            <p class="desc">{{detailsCard.message.display_phone!=''?detailsCard.message.display_phone:''}}</p>
+          </div>
+          <div class="col-md-6" *ngIf="detailsCard.message.price!=undefined">
+            <p class="tit">Price range</p>
+            <p class="desc">{{detailsCard.message.price!=undefined?detailsCard.message.price:''}}</p>
+          </div>
+          <div class="col-md-6">
+            <p class="tit">Status</p>
+            <p class="desc red" *ngIf="detailsCard.message.hours[0].is_open_now==false">
+              Closed
+            </p>
+            <p class="desc green" *ngIf="detailsCard.message.hours[0].is_open_now==true">
+              Open Now
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p class="tit">Visit yelp for more</p>
+            <p class="desc"><a href="{{detailsCard.message.url}}" target="_blank" class="btn btn-link">Business Link</a>
+            </p>
+          </div>
+        </div>
+        <div style="text-align:center" *ngIf="state!=null">
+          <button type=" button" class="btn btn-danger text-center" style="white-space:nowrap" (click)="open(content)"
+            *ngIf="state==false">Reserve Now</button>
+          <button type="button" class="btn btn-primary text-center" style="white-space:nowrap"
+            (click)="Cancelreservation()" *ngIf="state==true">Cancel
+            reservation</button>
+        </div>
+        <div class="d-grid gap-2 col-2 mx-auto">
+          <!-- <button type="button" class="btn btn-danger text-center" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">Reserve Now</button> -->
+
+        </div>
+        <p class="text-center tipline">Share on:
+          <a href="javascript:;" (click)="twitterUrl()"><img src="/assets/images/twitter.png" alt=""></a>
+          <a href="javascript:;" (click)="faceUrl()"><img src="/assets/images/face.jpg" alt=""></a>
+        </p>
+        <!-- 轮播图 -->
+        <div>
+          <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-ride="carousel"
+            data-bs-ride="carousel">
+            <!-- <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                      aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                      aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                      aria-label="Slide 3"></button>
+                  </div> -->
+            <div class="carousel-inner">
+              <div class="carousel-item {{i==0?'active':''}}" data-bs-interval="3000" data-ride="carousel"
+                *ngFor="let list of detailsCard.message.photos; index as i">
+                <img src="{{list}}" class="d-block w-40" alt="...">
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </mat-tab>
+    <mat-tab label="Map location">
+      <!-- google-map-demo.component.html -->
+      <!-- <google-map height="400px" width="750px" [center]="center" [zoom]="zoom" (mapClick)="addMarker($event)">
+        <map-marker *ngFor="let markerPosition of markerPositions" [position]="markerPosition"
+          [options]="markerOptions">
+        </map-marker>
+      </google-map> -->
+      <!-- <div  *ngIf="center!=null"> -->
+      <div *ngIf="apiLoaded | async">
+        <google-map width="100%" [center]="center" [zoom]="zoom" (mapClick)="addMarker($event)">
+          <map-marker *ngFor="let markerPosition of markerPositions" [position]="markerPosition"
+            [options]="markerOptions">
+          </map-marker>
+        </google-map>
+      </div>
+    </mat-tab>
+    <mat-tab label="Reviews">
+      <div id="reviewsbox">
+        <div class="con" *ngFor="let list of reviewsList.slice(0,3); index as i">
+          <p class="tit">{{list.user.name}}</p>
+          <p class="desc">Rating:{{list.rating}}/5</p>
+          <p class="desc">{{list.text}}</p>
+          <p class="desc">{{list.time_created.split(' ')[0]}}</p>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <!-- 模态框 -->
+  <ng-template #content let-modal>
+    <div class="modal-header">
+      <h2 class="modal-title" id="exampleModalLabel">Reservation form</h2>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+      <h3 class="text-center">{{form.businessname}}</h3>
+      <form class="row g-3 needs-validation" novalidate (submit)="formdata()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email" placeholder="name@example.com" required
+            [(ngModel)]="form.email" [ngModelOptions]="{standalone: true}">
+          <div class="invalid-feedback">
+            Email must be a valid email address
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="Date" class="form-label">Date</label>
+          <input type="Date" class="form-control" min={{nowDate}} id="Date" required [(ngModel)]="form.Date"
+            [ngModelOptions]="{standalone: true}">
+          <div class="invalid-feedback">
+            Date is required
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="Date" class="form-label">Time</label>
+          <div class="row">
+            <div class="col-3">
+              <select class="form-select" name="hour" id="" required [(ngModel)]="form.hour">
+                <option selected value=""></option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+              </select>
+            </div>
+            :
+            <div class="col-3">
+              <select class="form-select" name="minite" id="" required [(ngModel)]="form.minite">
+                <option selected value=""></option>
+                <option value="00">00</option>
+                <option value="15">15</option>
+                <option value="30">30</option>
+                <option value="45">45</option>
+              </select>
+            </div>
+
+          </div>
+        </div>
+        <div class="d-grid gap-2 col-2 mx-auto">
+          <button type="submit" class="btn btn-danger text-center">
+            {{state==false?'Submit':'Cancel Reservation'}}
+          </button>
+        </div>
+      </form>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-dark" (click)="modal.close('Save click')">Close</button>
+    </div>
+  </ng-template>
+</div>

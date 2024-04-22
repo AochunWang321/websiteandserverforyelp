@@ -1,0 +1,24 @@
+.nodata {
+  margin: 30px auto;
+  background-color: #fff;
+  font-size: 16px;
+  line-height: 40px;
+  max-width: 200px;
+  text-align: center;
+  color: #ff0000;
+  font-weight: bold;
+  border-radius: 20px;
+}
+
+#detailsCard {
+  position: relative;
+
+}
+
+#backleft {
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  font-size: 30px;
+  cursor: pointer;
+}

@@ -1,0 +1,32 @@
+<div class="container">
+
+  <h2 class="text-center red mt-4" *ngIf="serverList.length==0">No reservations to show</h2>
+  <div *ngIf="serverList.length!=0" style="overflow:auto">
+    <h1 class="text-center">List of your reservations</h1>
+    <br>
+    <br>
+    <br>
+    <table class="table" style="background-color: #fff">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th class="text-center">Business name</th>
+          <th class="text-center">Date</th>
+          <th class="text-center">Time</th>
+          <th class="text-center">E-mail</th>
+          <th class="text-center"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let list of serverList; index as i">
+          <th>{{i + 1}}</th>
+          <th class="text-center">{{list.businessname}}</th>
+          <th class="text-center">{{list.Date}}</th>
+          <th class="text-center">{{list.hour}}:{{list.minite}}</th>
+          <th class="text-center">{{list.email}}</th>
+          <th class="text-center"><i class="bi bi-trash3" (click)="deleted(list.businessname)"></i></th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

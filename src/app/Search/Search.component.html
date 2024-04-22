@@ -1,0 +1,23 @@
+<div>
+  <!-- searchform -->
+  <div [hidden]="!isShowsearchform">
+    <app-searchform (changeMsg)="onChangeMsg($event)"></app-searchform>
+  </div>
+  <div [hidden]="!isShowresultstable">
+    <!-- *ngIf="isShowresultstable==true" -->
+    <app-resultstable *ngIf="isShowresultstable==true&&resultstableList.length!=0" [tableList]="resultstableList"
+      (changeMsg)="onresultsTable($event)">
+    </app-resultstable>
+    <p class="nodata" *ngIf="isShowresultstable==true&&resultstableList.length==0">
+      No results available
+    </p>
+  </div>
+
+  <div [hidden]="!isShowreservationForm">
+    <app-reservationForm></app-reservationForm>
+  </div>
+  <div [hidden]="!isShowdetailsCard" *ngIf="detailsCardList!=undefined" id="detailsCard">
+    <i class="bi bi-arrow-left-short" id="backleft" (click)="backdetail()"></i>
+    <app-detailsCard [detailsCard]="detailsCardList"></app-detailsCard>
+  </div>
+</div>
